@@ -1,0 +1,54 @@
+import random
+
+
+def main():
+    title = input("Enter title: ")
+    noQ = int(input("How many questions do you have? "))
+    quiz = Quiz(title, noQ)
+    quiz.setQuestionsAndAnswers()
+    quiz.play()
+
+
+class Quiz:
+    def __init__(self, title: str, noQuestions: int, questions: dict = {}):
+        self.noQuestions = noQuestions
+        self.questions = questions
+        self.title = title
+
+    def play(self):
+        i = 0
+        scoreCount = 0
+        print(f"--- {self.title} ---")
+
+        for question, answers in self.questions.items():
+            print(f"Question {i+1}: {question}")
+            for _, answer in answers.items():
+                print(f"Answer: {answer}")
+
+            userAnswer = input("Your answer: ").lower()
+            correctAnswer = answers[True]
+            if userAnswer == correctAnswer:
+                print("Correct!")
+                scoreCount += 1
+            else:
+                print(f"Wrong! The correct answer is: {correctAnswer}")
+            i += 1
+        print(f"Final score: {scoreCount}")
+        print(f"You scored {scoreCount // self.noQuestions * 100}%")
+
+    def setQuestionsAndAnswers(self):
+        questionsAnswers = {}
+        for i in range(self.noQuestions):
+            q = input(f"Enter question {i+1}: ")
+            a = input("Correct answer: ").lower()
+            fa = input("Incorrect answer: ").lower()
+            order = random.choice([True, False])
+            if order:
+                questionsAnswers[q] = {True: a, False: fa}
+            else:
+                questionsAnswers[q] = {False: fa, True: a}
+        self.questions = questionsAnswers
+
+
+if __name__ == "__main__":
+    main()
